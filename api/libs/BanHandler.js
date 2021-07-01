@@ -1,4 +1,4 @@
-const db = require("../libs/db");
+const db = require("./db");
 
 
 const WindowMs = parseInt(process.env.WindowMs);

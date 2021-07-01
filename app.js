@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const easter_egg_hunt = require("./api/routes/easter-egg-hunt");
-const BanHandler = require("./api/routes/BanHandler");
+const BanHandler = require("./api/libs/BanHandler");
 app.use(express.json());
 
 app.enable('trust proxy');
