@@ -155,6 +155,31 @@ function GetBanStatus(ip)
     });
 }
 
+function AddUserToIP(ip, uid)
+{
+    ip=ReplaceInvalidChar(ip);
+    return new Promise(( resolve, reject ) =>{
+        var done=false;
+        database.ref("/rate-limit/"+ip+"/uids").once("value", (dat) => {
+            if(!done)
+            {
+                done=true;
+                var v = dat.val();
+                if(v == null) v = [uid];
+                else if(!v.includes(uid)) v.push(uid);
+                database.ref("/rate-limit/"+ip+"/uids").set(v);
+                resolve();
+            }
+        });
+        setTimeout(()=>{
+            if(!done)
+            {
+                done=true;
+                reject("could not connect to database, please try again");
+            }
+        },dbTimeOut);
+    });
+}
 module.exports = {
     RegisterUser : RegisterUser,
     GetUserData : GetUserData,
@@ -162,6 +187,7 @@ module.exports = {
     UpdateUser : UpdateUser,
     UpdateIp: UpdateIp,
     GetBanStatus : GetBanStatus,
+    AddUserToIP : AddUserToIP
 };
 //database.ref("/ips/")
 

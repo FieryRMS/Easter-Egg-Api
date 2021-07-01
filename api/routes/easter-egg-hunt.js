@@ -89,7 +89,7 @@ function ClueSolved(UserData, ClueData, res)
     res.status(200).json(response);
 }
 
-router.get("/:uid", async (req, res, next) =>{
+router.get("/:uid", async (req, res, next) =>{ // register users
     if(RegistrationOpen)
     {
         try{
@@ -153,6 +153,15 @@ router.patch("/", async (req, res, next) => { // for participants
         return;
     }
 
+    try{
+        var ip = req.ip || req.socket.remoteAddress;
+        db.AddUserToIP(ip, UserData.uid);
+    }
+    catch(err)
+    {
+        console.log(err);
+    }
+    
     var ClueData;
     try{
         ClueData= await db.GetClueData(ans);
